@@ -14,3 +14,14 @@ This isn't a philosophical argument. It has direct engineering consequences. Sys
 - Degrade over time rather than improve
 
 The fix isn't a better retrieval algorithm. It's rethinking what memory actually is.
+
+### Memory as a Four-Stage Process
+Cognitive science distinguishes four operations that together constitute memory. Each maps directly to decisions you make when building AI systems.
+
+1. Encoding
+Encoding is the transformation of raw experience into a form that can be stored. This is where the work happens — and where most systems skip entirely.
+When an agent observes something, that observation doesn't enter memory as-is. The brain (and a well-designed AI system) asks: What is the structure of this experience? What's salient? What type of memory does this belong to?
+In practice, encoding decisions include:
+- What gets encoded at all — Not everything is worth storing. A manufacturing robot doesn't need to remember every sensor reading. It needs to remember anomalies, state - transitions, and failure precursors.
+- The representation format — Raw text? Structured JSON? An embedding? The choice affects what retrieval can do downstream.
+Metadata attachment — Timestamp, source, confidence, context tags. Retrieval without metadata is a guess.
