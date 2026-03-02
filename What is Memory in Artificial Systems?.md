@@ -169,3 +169,22 @@ Experience asymmetry — Language agents can be pre-loaded with domain knowledge
 
 Embodied systems need memory architectures that encode uncertainty explicitly, support tiered access latency, and weight recent sensorimotor experience heavily.
 
+What This Means for Builders
+If you're building memory for an AI agent, the practical implications:
+Design encoding first, storage second. Your schema, your salience filter, your metadata structure — these decisions shape everything downstream. Most engineering time goes to retrieval optimization on a corpus that was never well-encoded.
+
+Implement consolidation or accept degradation. Without consolidation, memory grows indefinitely and becomes less useful over time. You don't need a perfect consolidation system — even a simple periodic synthesis step outperforms raw log accumulation.
+Use the right store for the memory type. Not everything belongs in a vector DB. Episodic memory wants temporal structure. Procedural memory wants fast, exact access.
+Build forgetting in. Strategic forgetting is not a limitation. It's what keeps memory useful. Systems without decay accumulate noise. Systems without conflict resolution accumulate contradictions.
+
+Treat retrieval as reconstruction. The goal isn't to find the right document — it's to reconstruct the right context. This shifts the design question from "how do I index this?" to "what does the agent need to know right now, and in what form?"
+
+Summary
+Memory in artificial systems is not a database with a similarity search layer. It's a pipeline:
+```
+Experience → Encoding → Consolidation → Storage → Retrieval → Reconstruction
+
+```
+Each stage is a design decision. Most implementations invest heavily in storage and retrieval, and skip encoding and consolidation entirely. That's why most memory systems feel impressive in demos and brittle in production.
+
+Build the pipeline in order. Start with what's worth remembering. Work forward from there.
