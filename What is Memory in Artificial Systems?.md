@@ -97,4 +97,17 @@ async def consolidate_episodic_to_semantic(
 
     return semantic_memories
 ```
+Conflict resolution — When a new observation contradicts an existing belief, consolidation decides which to trust. This is where confidence scores earn their weight.
+
+Decay — Memories that aren't reinforced should fade. This isn't a bug — it's the mechanism that prevents stale knowledge from dominating over recent experience.
+
+3. Storage
+This is the part everyone builds first. Which is backwards — storage decisions should follow encoding and consolidation decisions, not precede them.
+The right storage architecture depends on the memory type:
+| Memory Type | Characteristics                               | Suitable Storage                     |
+|-------------|----------------------------------------------|--------------------------------------|
+| Episodic    | Temporally indexed, specific events          | Time-series DB, append-only log      |
+| Semantic    | Fact-like, generalizable, slow-changing      | Vector DB + structured store         |
+| Procedural  | Action sequences, skill-like                 | Key-value store or graph database    |
+| Working     | Short-lived, context-specific                | In-context (no persistence)          |
 
