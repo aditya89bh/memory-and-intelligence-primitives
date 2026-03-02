@@ -157,5 +157,15 @@ Context window is working memory — fast, rich, but strictly limited. Everythin
 
 External stores (vector DBs, SQL, graph DBs) handle episodic and semantic memory for long-horizon agents. Their effectiveness depends entirely on how well encoding and consolidation were designed.
 
+The Embodied Case: Why Robots Make This Harder
+Everything above applies to language agents. Embodied systems — robots operating in physical environments — face additional constraints that expose the limits of the storage model quickly.
 
+Sensor noise — Robot perception is probabilistic. Every observation carries uncertainty. Memory systems that treat sensor data as ground truth accumulate errors that compound over time.
+
+Real-time constraints — A robot on a manufacturing line can't pause for 200ms to query a vector database mid-motion. Memory access latency has physical consequences.
+State-dependent relevance — What matters to remember depends on the robot's physical state and environment in ways that change continuously. A gripper at full extension has different relevant memories than the same gripper at rest.
+
+Experience asymmetry — Language agents can be pre-loaded with domain knowledge from text. Robots learn most of what they need to know from physical interaction. Every good deployment experience is rare and worth encoding carefully.
+
+Embodied systems need memory architectures that encode uncertainty explicitly, support tiered access latency, and weight recent sensorimotor experience heavily.
 
