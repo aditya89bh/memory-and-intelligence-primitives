@@ -104,10 +104,12 @@ Decay — Memories that aren't reinforced should fade. This isn't a bug — it's
 3. Storage
 This is the part everyone builds first. Which is backwards — storage decisions should follow encoding and consolidation decisions, not precede them.
 The right storage architecture depends on the memory type:
+```
 | Memory Type | Characteristics                               | Suitable Storage                     |
 |-------------|----------------------------------------------|--------------------------------------|
 | Episodic    | Temporally indexed, specific events          | Time-series DB, append-only log      |
 | Semantic    | Fact-like, generalizable, slow-changing      | Vector DB + structured store         |
 | Procedural  | Action sequences, skill-like                 | Key-value store or graph database    |
 | Working     | Short-lived, context-specific                | In-context (no persistence)          |
+```
 
