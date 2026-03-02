@@ -137,5 +137,25 @@ def formulate_retrieval_query(
         max_results=10,
     )
 ```
+Relevance reranking — Initial retrieval casts a wide net. Reranking applies task-specific relevance signals to surface what actually matters.
+Reconstruction — Retrieved fragments aren't the answer. They're inputs to a synthesis step that produces a coherent, contextually appropriate response.
+
+The Memory Spectrum in AI Systems
+Modern AI systems don't have one memory — they have several, operating at different timescales and with different access patterns:
+```
+Timescale       Type              Where It Lives
+─────────────────────────────────────────────────────
+Milliseconds    Working memory    Context window
+Seconds         Cache             KV cache
+Minutes–Hours   Episodic          Session store / log
+Days–Months     Semantic          Vector DB + SQL
+Permanent       Parametric        Model weights
+```
+Parametric memory (the model weights) is the most misunderstood layer. It's memory that was consolidated during training — factual knowledge, language patterns, reasoning heuristics. It's fast, but it's frozen. It can't be updated at runtime without fine-tuning.
+
+Context window is working memory — fast, rich, but strictly limited. Everything in context is "active." Once it scrolls out, it's gone unless persisted elsewhere.
+
+External stores (vector DBs, SQL, graph DBs) handle episodic and semantic memory for long-horizon agents. Their effectiveness depends entirely on how well encoding and consolidation were designed.
+
 
 
