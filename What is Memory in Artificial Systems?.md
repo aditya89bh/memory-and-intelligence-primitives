@@ -113,3 +113,29 @@ The right storage architecture depends on the memory type:
 | Working     | Short-lived, context-specific                | In-context (no persistence)          |
 ```
 
+The common mistake is using a single vector store for everything. Semantic similarity search is powerful, but it's the wrong retrieval mechanism for episodic memory (you want temporal queries) and procedural memory (you want exact match or graph traversal).
+
+4. Retrieval
+Retrieval is not lookup. It's reconstruction.
+When you "remember" something, you don't play back a recording. You reconstruct the memory from stored fragments, colored by your current state, context, and goals. This is why memory is malleable — and why AI retrieval systems that treat it as exact playback produce hallucinated confidence.
+
+Retrieval in a well-designed system involves:
+Query formulation — What are we actually looking for? The raw user query is rarely the right retrieval signal. The agent's internal state, current task, and recent context should shape the query.
+
+```
+def formulate_retrieval_query(
+    raw_query: str,
+    agent_state: AgentState,
+    task_context: TaskContext
+) -> RetrievalQuery:
+    return RetrievalQuery(
+        semantic_query=raw_query,
+        memory_types=[MemoryType.SEMANTIC, MemoryType.EPISODIC],
+        temporal_filter=task_context.relevant_timeframe,
+        tag_filters=agent_state.active_goals,
+        min_confidence=0.6,
+        max_results=10,
+    )
+```
+
+
