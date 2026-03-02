@@ -23,9 +23,9 @@ Encoding is the transformation of raw experience into a form that can be stored.
 When an agent observes something, that observation doesn't enter memory as-is. The brain (and a well-designed AI system) asks: What is the structure of this experience? What's salient? What type of memory does this belong to?
 
 In practice, encoding decisions include:
-- What gets encoded at all — Not everything is worth storing. A manufacturing robot doesn't need to remember every sensor reading. It needs to remember anomalies, state - transitions, and failure precursors.
+- What gets encoded at all — Not everything is worth storing. A manufacturing robot doesn't need to remember every sensor reading. It needs to remember anomalies, state transitions, and failure precursors.
 - The representation format — Raw text? Structured JSON? An embedding? The choice affects what retrieval can do downstream.
-Metadata attachment — Timestamp, source, confidence, context tags. Retrieval without metadata is a guess.
+- Metadata attachment — Timestamp, source, confidence, context tags. Retrieval without metadata is a guess.
 
 ```
 # Naive approach: store everything as-is
@@ -56,5 +56,45 @@ def encode(observation: str, context: AgentContext) -> Optional[MemoryUnit]:
         tags=extract_tags(observation, context),
     )
 
+```
+
+2. Consolidation
+Encoding captures individual experiences. Consolidation is the process of integrating them into stable, generalizable knowledge.
+In biological systems, this happens during sleep — the hippocampus replays recent experiences and the cortex decides what to absorb into long-term memory. The key insight is that consolidation is lossy by design. You don't retain the raw experience. You retain what the experience taught you.
+For AI systems, consolidation is the step that most implementations skip entirely. Without it, memory grows without gaining coherence.
+
+Consolidation mechanisms for AI agents:
+Pattern extraction — After N episodic memories of a similar type, synthesize a semantic memory.
+
+```
+async def consolidate_episodic_to_semantic(
+    memories: list[MemoryUnit],
+    agent: Agent
+) -> list[MemoryUnit]:
+    """
+    Runs periodically (e.g., after task completion or on a schedule).
+    Identifies recurring patterns and promotes them to semantic memory.
+    """
+    clustered = cluster_by_similarity(memories)
+
+    semantic_memories = []
+    for cluster in clustered:
+        if len(cluster) < CONSOLIDATION_THRESHOLD:
+            continue
+
+        # Synthesize: what does this cluster teach us?
+        synthesis = await agent.synthesize(
+            experiences=cluster,
+            prompt="What general principle do these experiences demonstrate?"
+        )
+
+        semantic_memories.append(MemoryUnit(
+            content=synthesis,
+            type=MemoryType.SEMANTIC,
+            derived_from=[m.id for m in cluster],
+            confidence=compute_confidence(cluster),
+        ))
+
+    return semantic_memories
 ```
 
